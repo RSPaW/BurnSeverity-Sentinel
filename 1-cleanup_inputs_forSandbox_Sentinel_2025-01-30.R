@@ -17,30 +17,37 @@
   histpath <- "M:\\Zdrive\\DEC\\Prescribed_Bushfire_Outcomes_2018-134\\DATA\\Working\\sevSentinel"
   
   # inputs 
-  shp.name <- "PHS2024dec.shp" # shp name
+  shp.name <- "bf2025jan.shp" # shp name
   
   # read in shp
   shp.select <- st_read(here::here("fireSelection", shp.name), stringsAsFactors = FALSE) %>% 
     st_make_valid() # check and correct geometry
+  shp.select$NUMBER
   
   # if the selection shp was provided by "Fire Systems Support"
   if ("FIRE_SEASO" %in% colnames(shp.select) == TRUE){
     shp <- shp.select %>% rename(OBJECTID = OBJECTID_1, FIH_FIRE_S = FIRE_SEASO, FIH_YEAR1 = YEAR1, FIH_SEASON = SEASON1, 
                   FIH_DISTRI = DISTRICT, FIH_HIST_D = HIST_DISTR, FIH_NUMBER = NUMBER, FIH_FIRE_T = FIRE_TYPE, 
                   FIH_DATE1 = DATE1, FIH_CAUSE = CAUSE, FIH_IGNIT_ = IGNIT_TYPE, FIH_DETECT = DETECT_FDI, 
-                  FIH_CAPT_M = CAPT_METH, FIH_AUTHOR = AUTHOR, FIH_POLY_T = POLY_TYPE_, FIH_COMMEN = COMMENT, 
+                  FIH_CAPT_M = CAPT_METH, FIH_AUTHOR = AUTHOR, FIH_POLY_T = POLY_TYPE, FIH_COMMEN = COMMENT, 
                   FIH_NAME = NAME, FIH_BURN_P = BURN_PURP, FIH_MASTER = Master_Key, FIH_PERIME = Perimeter, 
-                  FIH_HECTAR = Hectares) %>%
-      mutate(FIH_NUMBER = str_replace(FIH_NUMBER, "_", "")) %>%
-      mutate(id = case_when(FIH_FIRE_T == "BF" & nchar(FIH_NUMBER) == 6 ~ 
+                  FIH_HECTAR = Hectares) 
+    shp$FIH_FIRE_T[shp$FIH_FIRE_T == "BF"] <- "WF"
+    shp <- shp %>%
+      mutate(FIH_NUMBER = str_replace_all(FIH_NUMBER, " ", "")) %>%
+      mutate(FIH_NUMBER = str_replace_all(FIH_NUMBER, "_", "")) %>%
+      mutate(id = case_when(FIH_FIRE_T == "WF" & nchar(FIH_NUMBER) == 6 ~ 
                                      paste0("BF", FIH_YEAR1, "-", FIH_NUMBER),
-                                   TRUE ~ FIH_NUMBER))
-    
+                                   TRUE ~ FIH_NUMBER))%>%
+      mutate(id = case_when(FIH_FIRE_T == "WF" & nchar(id) == 12 ~ 
+                              paste0(str_sub(id, end = 6), "-", str_sub(id, start = 7)),
+                            TRUE ~ id)) 
+    shp$id  
     st_write(shp, here::here("fireSelection", shp.name), append=FALSE)
   }else{
     shp <- shp.select
   }
-  
+
   colnames(shp)[which(colnames(shp) == "id")] <- "BURNID"
   shp$BURNID <- as.character(shp$BURNID)
 
