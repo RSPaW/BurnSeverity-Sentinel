@@ -7,13 +7,13 @@ library(parsedate)
 
 unlink(here("tmp"), recursive = TRUE)
 
-tarfile <- here("s2_rgb_nbr (3).tar.gz")
+tarfile <- here("s2_rgb_nbr (6).tar.gz")
 untar(tarfile, exdir = here("tmp"))
 
 plst <- list.files(here("tmp\\home\\jovyan\\fireSeverity\\rgb_nbr"), pattern = ".png$" )
 tlst <- list.files(here("tmp\\home\\jovyan\\fireSeverity\\rgb_nbr"), pattern = ".tif$" )
 
-dates <- read_csv(here("inputs", "clean_dates.csv"))
+dates <- read_csv(here("inputs", "clean_dates_edited.csv"))
 
 
 burns <- unique(str_split_fixed(plst, "_", 3)[,1])
