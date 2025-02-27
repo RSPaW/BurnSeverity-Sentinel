@@ -5,8 +5,6 @@ library(lubridate)
 library(here)
 library(doParallel)
 
-
-
 lshp <- list.files(here::here("inputs", "shpByBurn"), pattern = "shp$", full.names = TRUE)
 #shp <- st_read(lshp[1], stringsAsFactors = FALSE, quiet = TRUE)
 

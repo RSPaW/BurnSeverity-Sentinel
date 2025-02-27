@@ -23,7 +23,8 @@ dates$pageNumber <- str_replace_all(dates$pageNumber, ",", "")
 
 dir.create(here("maps"), showWarnings = FALSE)
 
-shp <- st_read(here("models\\Template_AFED\\Template_AFED.shp"))[0,]
+mdir <- "Z:\\DEC\\Prescribed_Bushfire_Outcomes_2018-134\\DATA\\Working\\sevSentinel\\xModels\\"
+shp <- st_read(paste0(mdir, "Template_AFED\\Template_AFED.shp"))[0,]
 burnt.shp <- shp #dplyr::select(shp, -BURNID)
 
 all.tifs <- NA
@@ -57,26 +58,26 @@ i <- 1
     st_transform(crs = st_crs(shp))
   shp <- rbind(shp, shpi)
 
-  shps <- list.files(paste0(fold2, "/actual_burnt"), pattern = "shp$", full.names = TRUE)
-  j <- 1
-  for(j in 1:length(shps)){
-    #shp.j <- st_read(shps[j], quiet = TRUE) 
-   
-    
-    shp.j <- st_read(shps[j], quiet = TRUE)
-    
-    shp.m <- st_cast(shp.j, "POLYGON")
-    shp.m$area <- as.numeric(st_area(shp.m))
-    shp.m <- filter(shp.m, area > 500)
-    #plot(shp.m[,1])
-    shp.s <- shp.m %>% group_by(NUMBER) %>%
-      summarise()%>%
-      st_cast("MULTIPOLYGON")
-    shp.s <- left_join(shp.s, st_drop_geometry(shp.j[1,]),  by = "NUMBER") 
-    shp.s <-  st_transform(shp.s, crs = st_crs(burnt.shp))
-    
-     burnt.shp <- rbind(burnt.shp, shp.s)
-  }
+  # shps <- list.files(paste0(fold2, "/actual_burnt"), pattern = "shp$", full.names = TRUE)
+  # j <- 1
+  # for(j in 1:length(shps)){
+  #   #shp.j <- st_read(shps[j], quiet = TRUE) 
+  #  
+  #   
+  #   shp.j <- st_read(shps[j], quiet = TRUE)
+  #   
+  #   shp.m <- st_cast(shp.j, "POLYGON")
+  #   shp.m$area <- as.numeric(st_area(shp.m))
+  #   shp.m <- filter(shp.m, area > 500)
+  #   #plot(shp.m[,1])
+  #   shp.s <- shp.m %>% group_by(NUMBER) %>%
+  #     summarise()%>%
+  #     st_cast("MULTIPOLYGON")
+  #   shp.s <- left_join(shp.s, st_drop_geometry(shp.j[1,]),  by = "NUMBER") 
+  #   shp.s <-  st_transform(shp.s, crs = st_crs(burnt.shp))
+  #   
+  #    burnt.shp <- rbind(burnt.shp, shp.s)
+  # }
   
 plot(shp[,2])
 plot(burnt.shp[,2])
