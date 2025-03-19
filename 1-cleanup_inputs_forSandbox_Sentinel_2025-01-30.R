@@ -14,7 +14,7 @@
   pre.days <- 200 # number of days prior to start date included
   post.days <- 100  # number of days following to end date included
   
-  histpath <- "M:\\Zdrive\\DEC\\Prescribed_Bushfire_Outcomes_2018-134\\DATA\\Working\\sevSentinel"
+  histpath <- "Z:\\DEC\\Prescribed_Bushfire_Outcomes_2018-134\\DATA\\Working\\sevSentinel"
   
   # inputs 
   shp.name <- "bf2025jan.shp" # shp name
@@ -86,7 +86,7 @@
     }
   }
   
-  op.done <- read.csv("M:\\Zdrive\\DEC\\Prescribed_Bushfire_Outcomes_2018-134\\DATA\\Working\\Operational\\xIndex\\DoneIds_2023-07-21.csv")
+  op.done <- read.csv("Z:\\DEC\\Prescribed_Bushfire_Outcomes_2018-134\\DATA\\Working\\Operational\\xIndex\\DoneIds_2023-07-21.csv")
   idsDone <- c(idsDone, op.done$id)
   
   shp.done <- filter(shp, BURNID %in% idsDone)
