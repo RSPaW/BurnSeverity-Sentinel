@@ -23,7 +23,7 @@ shpx <- st_read("M:\\Zdrive\\DEC\\Prescribed_Bushfire_Outcomes_2018-134\\DATA\\W
 dates <- read.csv(here("inputs", "clean_dates_edited.csv")) %>%
   rename(start = date, end = date_end)
 
-shp.tmp <- st_read(here("models\\Template_AFED\\Template_AFED.shp"))
+shp.tmp <- st_read("Z:\\DEC\\Prescribed_Bushfire_Outcomes_2018-134\\DATA\\Working\\sevSentinel\\xModels\\Template_AFED\\Template_AFED.shp")
 shp.tmp[1,1] <- NA
 
 tlist <- as.data.frame(list.files(here("dNBR"), pattern = ".tiff$"))
