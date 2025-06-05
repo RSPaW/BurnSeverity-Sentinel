@@ -13,9 +13,9 @@ burns <- str_split_fixed(burns.f, "_", 2)[,2]
 
 dates <- read.csv(here("inputs", "clean_dates_edited.csv"))
 
-rst.per <-raster("M:\\Zdrive\\DEC\\Prescribed_Bushfire_Outcomes_2018-134\\DATA\\Working\\vegMask\\perenialVeg\\rem_Woody_veg_2020.tif")
+rst.per <-raster("Z:\\DEC\\Prescribed_Bushfire_Outcomes_2018-134\\DATA\\Working\\vegMask\\perenialVeg\\rem_Woody_veg_2020.tif")
 #burns <- "DON-2017-76962083"
-shpx <- st_read("M:\\Zdrive\\DEC\\Prescribed_Bushfire_Outcomes_2018-134\\DATA\\Working\\sevSentinel\\xIndex\\DBCA_FireHistory_2017-2023_Id.shp", 
+shpx <- st_read("Z:\\DEC\\Prescribed_Bushfire_Outcomes_2018-134\\DATA\\Working\\sevSentinel\\xIndex\\DBCA_FireHistory_2017-2023_Id.shp", 
                 quiet = TRUE) %>%
   st_transform("+proj=aea +lat_1=-18 +lat_2=-36 +lat_0=0 +lon_0=132 +x_0=0 +y_0=0 +ellps=GRS80 +units=m +no_defs") %>%
   rename(BURNID = id)
