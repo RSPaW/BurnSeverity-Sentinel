@@ -36,7 +36,7 @@ plist <- str_split_fixed(list.dirs(here("all_rgbs"),
 burns <- tlist$Burn.Id[tlist$Burn.Id %in% plist]
 #burns <- "BWD-2017-52569681"
 
-rst.per <-raster("M:\\Zdrive\\DEC\\Prescribed_Bushfire_Outcomes_2018-134\\DATA\\Working\\vegMask\\perenialVeg\\rem_Woody_veg_2020.tif")
+rst.per <-raster("Z:\\DEC\\Prescribed_Bushfire_Outcomes_2018-134\\DATA\\Working\\vegMask\\perenialVeg\\rem_Woody_veg_2020.tif")
 
 i <- 2
 
