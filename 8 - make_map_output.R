@@ -10,9 +10,10 @@ use.heath <- "y"
 #paste0("BF", YEAR1, "-", str_replace(NUMBER, "_", ""))
 dates <- read.csv(here::here("inputs",  "clean_dates_edited.csv")) 
 colnames(dates)[1] <- "BURNID"
-dates<-   mutate(dates, BURNID = str_replace(BURNID, "_", ""), mapText = "") %>%
+dates <-   mutate(dates, BURNID = str_replace(BURNID, "_", ""), mapText = "") %>%
+  mutate(BURNID = paste0(str_sub(BURNID, end = 6), str_sub(BURNID, start = 10))) %>%
   rename(burnName = FIH_NAME) %>%
-  mutate(pageNumber = paste0(BURNID, "_", burnName)) %>%
+  mutate(pageNumber = paste0(BURNID, "_", burnName,  "_", Sys.Date())) %>%
   dplyr::select(BURNID, pageNumber, mapText, burnName)
 
 dates$pageNumber <- str_replace_all(dates$pageNumber, " ", "")
@@ -45,21 +46,24 @@ i <- 1
 
   tifs <- as.data.frame(list.files(paste0(fold2, "/severity_geoTifs"), pattern = "tif$", full.names = TRUE))
   colnames(tifs) <- "file"
-  tifs <- tifs %>% mutate(BURNID = str_split_fixed(str_split_fixed(file, "BurnSeverity_", 2)[,2], "_", 2)[,1]) 
+  tifs <- tifs %>% mutate(BURNID = str_split_fixed(str_split_fixed(file, "BurnSeverity_", 2)[,2], "_", 2)[,1]) %>%
+    mutate(BURNID = paste0(str_sub(BURNID, end = 6), str_sub(BURNID, start = 10)))
   
 
  
   #csvs <- list.files(paste0(fold2, "/severity_stats"), pattern = "csv$", full.names = TRUE)
-  df.stat <- read.csv(paste0(fold2, "/severity_stats/summaryStats.csv"))
+  df.stat <- read.csv(paste0(fold2, "/severity_stats/summaryStats.csv")) %>%
+    mutate(BURNID = paste0(str_sub(BURNID, end = 6), str_sub(BURNID, start = 10)))
  
   #df.stat <- bind_rows(df.stat, csv)
   shp.name <- list.files(paste0(fold2, "/treatment_area"), pattern = ".shp$", full.names = TRUE) 
   shpi <- st_read(shp.name)%>%
-    st_transform(crs = st_crs(shp))
+    st_transform(crs = st_crs(shp))%>% 
+    mutate(BURNID = paste0(str_sub(BURNID, end = 6), str_sub(BURNID, start = 10)))
   shp <- rbind(shp, shpi)
 
 plot(shp[,2])
-plot(burnt.shp[,2])
+#plot(burnt.shp[,2])
 
 shpj <- shp %>% dplyr::select(-date) %>%
   left_join(df.stat, by = "BURNID") %>%
@@ -90,6 +94,7 @@ for(i in 2:length(csvs)){
 }
 }
 imgUsed <- imgUsed %>% mutate(BURNID = str_split_fixed(file, "_", 4)[,1]) %>%
+  mutate(BURNID = paste0(str_sub(BURNID, end = 6), str_sub(BURNID, start = 10))) %>%
   group_by(BURNID) %>%
   summarise(date = max(ymd(date))) %>%
   rename(imLast = date)
@@ -109,8 +114,8 @@ shpf <- left_join(shpf, imgUsed, by = "BURNID")
   #   }
   # }
 #}
-dir.create(here("burntArea"), showWarnings = FALSE)
-st_write(burnt.shp, here("burntArea", paste0(folder.name, "_burntArea_", Sys.Date(), ".shp")), append=FALSE)
+#dir.create(here("burntArea"), showWarnings = FALSE)
+#st_write(burnt.shp, here("burntArea", paste0(folder.name, "_burntArea_", Sys.Date(), ".shp")), append=FALSE)
 
 shpf$date <- ymd(shpf$date)
 shpf <- st_make_valid(shpf)
