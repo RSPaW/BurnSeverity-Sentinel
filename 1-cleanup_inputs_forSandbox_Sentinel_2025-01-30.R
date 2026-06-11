@@ -14,10 +14,10 @@
   pre.days <- 200 # number of days prior to start date included
   post.days <- 100  # number of days following to end date included
   
-  histpath <- "Z:\\DEC\\Prescribed_Bushfire_Outcomes_2018-134\\DATA\\Working\\Sentinel"
+  histpath <- "M:\\zdrive\\DEC\\Prescribed_Bushfire_Outcomes_2018-134\\DATA\\Working\\Sentinel"
   
   # inputs 
-  shp.name <- "Burn_Severity_BF_January.shp" # shp name
+  shp.name <- "FIRENAME.shp" # shp name
   
   # read in shp
   shp.select <- st_read(here::here("fireSelection", shp.name), stringsAsFactors = FALSE) %>% 
@@ -86,7 +86,7 @@
     }
   }
   
-  op.done <- read.csv("Z:\\DEC\\Prescribed_Bushfire_Outcomes_2018-134\\DATA\\Working\\Operational\\xIndex\\DoneIds_2023-07-21.csv")
+  op.done <- read.csv("M:\\zdrive\\DEC\\Prescribed_Bushfire_Outcomes_2018-134\\DATA\\Working\\Operational\\xIndex\\DoneIds_2023-07-21.csv")
   idsDone <- c(idsDone, op.done$id)
   
   shp.done <- filter(shp, BURNID %in% idsDone)
@@ -101,9 +101,9 @@
     # check and correct date format
     shp$date <- as.Date(parse_date_time(shp$FIH_DATE1, c("ymd", "dmy")))
     # calculate start and end dates
-    shp <- shp %>% mutate(date_end = date + 60, im_strt = date - pre.days, im_end = date + post.days)
+    shp <- shp %>% mutate(date_end = date + 60, im_start = date - pre.days, im_end = date + post.days)
     
-    shp.n <- dplyr::select(shp, BURNID, FIH_NAME, date, date_end, im_strt, im_end) %>%
+    shp.n <- dplyr::select(shp, BURNID, FIH_NAME, date, date_end, im_start, im_end) %>%
       na.omit()
     
     # create directory for inputs
