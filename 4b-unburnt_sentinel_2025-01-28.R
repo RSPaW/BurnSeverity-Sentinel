@@ -16,14 +16,14 @@ v <- paste0("v", Sys.Date())
 lshp <- list.files(here::here("inputs", "shpByBurn"), pattern = "shp$", full.names = TRUE)
 shp <- st_read(lshp[1], stringsAsFactors = FALSE, quiet = TRUE)
 
-shpx <- st_read("Z:\\DEC\\Prescribed_Bushfire_Outcomes_2018-134\\DATA\\Working\\Sentinel\\xIndex\\DBCA_FireHistory_2017-2023_Id.shp", quiet = TRUE) %>%
+shpx <- st_read("M:\\zdrive\\DEC\\Prescribed_Bushfire_Outcomes_2018-134\\DATA\\Working\\Sentinel\\xIndex\\DBCA_FireHistory_2017-2023_Id.shp", quiet = TRUE) %>%
    st_transform("+proj=aea +lat_1=-18 +lat_2=-36 +lat_0=0 +lon_0=132 +x_0=0 +y_0=0 +ellps=GRS80 +units=m +no_defs") %>%
   rename(BURNID = id)
 
 dates <- read.csv(here("inputs", "clean_dates_edited.csv")) %>%
   rename(start = date, end = date_end)
 
-shp.tmp <- st_read("Z:\\DEC\\Prescribed_Bushfire_Outcomes_2018-134\\DATA\\Working\\Sentinel\\xModels\\Template_AFED\\Template_AFED.shp")
+shp.tmp <- st_read("M:\\zdrive\\DEC\\Prescribed_Bushfire_Outcomes_2018-134\\DATA\\Working\\Sentinel\\xModels\\Template_AFED\\Template_AFED.shp")
 shp.tmp[1,1] <- NA
 
 tlist <- as.data.frame(list.files(here("dNBR"), pattern = ".tiff$"))
@@ -36,7 +36,7 @@ plist <- str_split_fixed(list.dirs(here("all_rgbs"),
 burns <- tlist$Burn.Id[tlist$Burn.Id %in% plist]
 #burns <- "BWD-2017-52569681"
 
-rst.per <-raster("Z:\\DEC\\Prescribed_Bushfire_Outcomes_2018-134\\DATA\\Working\\vegMask\\perenialVeg\\rem_Woody_veg_2020.tif")
+rst.per <-raster("M:\\zdrive\\DEC\\Prescribed_Bushfire_Outcomes_2018-134\\DATA\\Working\\vegMask\\perenialVeg\\rem_Woody_veg_2020.tif")
 
 i <- 2
 
