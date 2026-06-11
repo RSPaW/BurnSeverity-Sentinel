@@ -19,7 +19,7 @@ mtx <- c(-Inf, 0.3, 2,
          2.1, 2.7, 4, 
          2.7, Inf, 5)
 rclmat <- matrix(mtx, ncol=3, byrow=TRUE)
-mdir <- "Z:\\DEC\\Prescribed_Bushfire_Outcomes_2018-134\\DATA\\Working\\Sentinel\\xModels\\"
+mdir <- "M:\\zdrive\\DEC\\Prescribed_Bushfire_Outcomes_2018-134\\DATA\\Working\\Sentinel\\xModels\\"
 maxVals <- readRDS(paste0(mdir, "maxVals.sentinel"))
 
 mlist <- as.data.frame(list.files(paste0(mdir)), stringsAsFactors = FALSE)
@@ -35,7 +35,7 @@ ibra <- st_read(paste0(mdir, "\\IBRA_wa.shp"), quiet = TRUE)
 
 #####HEATH######
 
-heath.dir <- "Z:\\DEC\\Prescribed_Bushfire_Outcomes_2018-134\\DATA\\Working\\heath\\predict\\heath_shp"
+heath.dir <- "M:\\zdrive\\DEC\\Prescribed_Bushfire_Outcomes_2018-134\\DATA\\Working\\heath\\predict\\heath_shp"
 
 heath.list <- list.files(heath.dir, pattern = "shp$")
 heath.list <- sort(heath.list, decreasing = TRUE)
@@ -44,7 +44,7 @@ heath <- st_read(paste0(heath.dir, "\\", heath.list[1]), quiet = TRUE) %>%
   st_transform("+proj=aea +lat_1=-18 +lat_2=-36 +lat_0=0 +lon_0=132 +x_0=0 +y_0=0 +ellps=GRS80 +units=m +no_defs")
 heath <- heath[,0]
 
-heath.dir2 <- "Z:\\DEC\\Prescribed_Bushfire_Outcomes_2018-134\\DATA\\Working\\heath\\heathFromDistricts"
+heath.dir2 <- "M:\\zdrive\\DEC\\Prescribed_Bushfire_Outcomes_2018-134\\DATA\\Working\\heath\\heathFromDistricts"
 heath.list2 <- list.files(heath.dir2, pattern = "shp$", full.names = TRUE)
 
 i <- 1
