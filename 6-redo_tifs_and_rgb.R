@@ -43,7 +43,7 @@ shp.alb <- st_transform(shp, crs = "+proj=aea +lat_1=-18 +lat_2=-36 +lat_0=0 +lo
 # check if polys look sensible
 plot(shp.alb[,1])
 
-block.name <- str_split_fixed(str_split_fixed(here(), "sevSentinel/", 2)[,2], "_", 2)[,2]
+block.name <- str_split_fixed(str_split_fixed(here(), "Sentinel/", 2)[,2], "_", 2)[,2]
 #save out shp
 st_write(shp.alb, here::here(paste0("inputs\\clean_", 
                                     block.name,"_", Sys.Date(), "_redo.shp")), delete_dsn=TRUE)
@@ -53,7 +53,7 @@ library(parsedate)
 
 unlink(here("tmp"), recursive = TRUE)
 
-tarfile <- here("s2_rgb_nbr (1).tar.gz")
+tarfile <- here("s2_rgb_nbr.tar.gz")
 untar(tarfile, exdir = here("tmp"))
 
 plst <- list.files(here("tmp\\home\\jovyan\\fireSeverity\\rgb_nbr"), pattern = ".png$" )
