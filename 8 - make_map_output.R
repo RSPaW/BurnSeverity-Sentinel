@@ -24,7 +24,7 @@ dates$pageNumber <- str_replace_all(dates$pageNumber, ",", "")
 
 dir.create(here("maps"), showWarnings = FALSE)
 
-mdir <- "Z:\\DEC\\Prescribed_Bushfire_Outcomes_2018-134\\DATA\\Working\\Sentinel\\xModels\\"
+mdir <- "M:\\zdrive\\DEC\\Prescribed_Bushfire_Outcomes_2018-134\\DATA\\Working\\Sentinel\\xModels\\"
 shp <- st_read(paste0(mdir, "Template_AFED\\Template_AFED.shp"))[0,]
 burnt.shp <- shp #dplyr::select(shp, -BURNID)
 
