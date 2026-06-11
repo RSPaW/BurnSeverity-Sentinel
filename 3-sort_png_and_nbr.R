@@ -7,7 +7,7 @@ library(parsedate)
 
 unlink(here("tmp"), recursive = TRUE)
 
-tarfile <- here("s2_rgb_nbr (6).tar.gz")
+tarfile <- here("s2_rgb_nbr.tar.gz")
 untar(tarfile, exdir = here("tmp"))
 
 plst <- list.files(here("tmp\\home\\jovyan\\fireSeverity\\rgb_nbr"), pattern = ".png$" )
