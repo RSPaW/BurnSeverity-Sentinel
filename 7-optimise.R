@@ -5,6 +5,7 @@ library(lubridate)
 library(here)
 library(doParallel)
 
+dir.create(here("bufferStats"), showWarnings = FALSE)
 dir.create(here("bufferStats", "allPre"), showWarnings = FALSE)
 
 burns.f <- list.dirs(here("all_rgbs"), recursive = FALSE, full.names = FALSE)

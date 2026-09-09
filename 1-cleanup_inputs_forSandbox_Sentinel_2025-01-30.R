@@ -17,7 +17,7 @@
   histpath <- "Z:\\DEC\\Prescribed_Bushfire_Outcomes_2018-134\\DATA\\Working\\Sentinel"
   
   # inputs 
-  shp.name <- "Burn_Severity_BF_January.shp" # shp name
+  shp.name <- "Bushfires_nearNewmont_202526.shp" # shp name
   
   # read in shp
   shp.select <- st_read(here::here("fireSelection", shp.name), stringsAsFactors = FALSE) %>% 
@@ -48,9 +48,23 @@
     shp <- shp.select
   }
 
+  if ("999" %in% shp$id){
+  shpT <- st_transform(shp, mga50)
+  
+  shpC <- st_centroid(shpT)
+  
+  shp$x <- as.character(round(st_coordinates(shpC)[,1], 0))
+  shp$y <- as.character(round(st_coordinates(shpC)[,2],0))
+  
+  shp <- shp %>% mutate(id = case_when(id == "999" ~ paste0(FIH_DISTRI, "-", FIH_YEAR1, "-", str_sub(x, start = -4),  str_sub(y, start = -4)), 
+                                    TRUE ~ id)) %>%
+    dplyr::select(-x, -y)
+  st_write(shp, here::here("fireSelection", shp.name), append=FALSE)
+  }
+  
   colnames(shp)[which(colnames(shp) == "id")] <- "BURNID"
   shp$BURNID <- as.character(shp$BURNID)
-
+  
   if (length(unique(shp$BURNID)) - nrow(shp) != 0){
     cat("the selection has duplicate ids!!!")
   }
@@ -103,8 +117,7 @@
     # calculate start and end dates
     shp <- shp %>% mutate(date_end = date + 60, im_strt = date - pre.days, im_end = date + post.days)
     
-    shp.n <- dplyr::select(shp, BURNID, FIH_NAME, date, date_end, im_strt, im_end) %>%
-      na.omit()
+    shp.n <- dplyr::select(shp, BURNID, FIH_NAME, date, date_end, im_strt, im_end) 
     
     # create directory for inputs
     dir.create(here::here("inputs"), showWarnings = FALSE)
